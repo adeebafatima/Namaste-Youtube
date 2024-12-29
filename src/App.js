@@ -1,9 +1,23 @@
+import Head from './components/Head';
+import Body from './components/Body';
+
 import './App.css';
 
 function App() {
   return (
     <div>
-    <h1 className="text-3xl">Namate React</h1>
+    <Head/>
+    <Body/>
+    {/* 
+    Head
+    Body
+      SideBar
+        MenuItems
+      MainContainer
+        ButtonList
+        VideoContainer
+          VideoCard
+    */}
     </div>
   );
 }
