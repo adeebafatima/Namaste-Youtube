@@ -1,6 +1,12 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 const SideBar = () => {
+  const isMenuOpen = useSelector(store=>store.app.isMenuOpen);
+
+  //Early return
+  if(!isMenuOpen) return null;
+
   return (
     <div className="p-5 w-48 shadow-lg">
       <ul>
@@ -21,7 +27,6 @@ const SideBar = () => {
 
       <h1 className="font-bold pt-5">Subscriptions</h1>
       <ul>
-        {" "}
         <li>Huda TV</li>
         <li>Akshay Saini</li>
         <li>Chirag Goel</li>
@@ -46,7 +51,6 @@ const SideBar = () => {
 
       <h1 className="font-bold pt-5">More from Youtube</h1>
       <ul>
-        {" "}
         <li>YouTube Premium</li>
         <li>YouTube Studio</li>
         <li>Youtube Music</li>

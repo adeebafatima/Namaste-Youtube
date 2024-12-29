@@ -1,19 +1,30 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { toggleMenu } from "../utils/appSlice";
 
 const Head = () => {
+  const dispatch = useDispatch();
+
+  const toggleMenuHandler = () => {
+    dispatch(toggleMenu());
+  };
+
   return (
     <div className="grid grid-flow-col p-5 shadow-lg">
       <div className="flex col-span-1">
         <img
-          className="h-8"
+          className="h-8 cursor-pointer"
+          onClick={() => toggleMenuHandler()}
           alt="menu"
           src="https://53.fs1.hubspotusercontent-na1.net/hub/53/hubfs/What%20is%20a%20Hamburger%20Button.png?width=450&name=What%20is%20a%20Hamburger%20Button.png"
         />
-        <img
-          className="h-8 mx-2"
-          alt="youtube-logo"
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Logo_of_YouTube_%282013-2015%29.svg/2560px-Logo_of_YouTube_%282013-2015%29.svg.png"
-        />
+        <a href="/">
+          <img
+            className="h-8 mx-2"
+            alt="youtube-logo"
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Logo_of_YouTube_%282013-2015%29.svg/2560px-Logo_of_YouTube_%282013-2015%29.svg.png"
+          />
+        </a>
       </div>
       <div className="col-span-10 px-10">
         <input
