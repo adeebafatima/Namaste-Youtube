@@ -2,15 +2,30 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toggleMenu } from "../utils/appSlice";
 import { YOUTUBE_SEARCH_API } from "../utils/constants";
+import { useSelector } from "react-redux";
+import { cacheResults } from "../utils/searchSlice";
 
 const Head = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const dispatch = useDispatch();
+  const searchCache = useSelector((store) => store.search);
+  // searchCache
+  // {
+  //   "ip":['iphone11',"iphone12"]
+  // }
 
   useEffect(() => {
     // Make an API call after every key press but if difference between 2 API calls is < 200ms decline the API call
-    const timer = setTimeout(() => getSearchSuggestions(), 200);
+    const timer = setTimeout(() => {
+      if (searchCache.searchQuery) {
+        //searchCache[searchQuery]
+        setSuggestions(searchCache.searchQuery);
+      } else {
+        getSearchSuggestions();
+      }
+    }, 200);
 
     //on re-render clear previous timer
     return () => {
@@ -33,9 +48,13 @@ const Head = () => {
     const data = await fetch(YOUTUBE_SEARCH_API + searchQuery);
     const json = await data.json();
     setSuggestions(json[1]);
-  };
 
-  const dispatch = useDispatch();
+    dispatch(
+      cacheResults({
+        [searchQuery]: json[1],
+      })
+    );
+  };
 
   const toggleMenuHandler = () => {
     dispatch(toggleMenu());
