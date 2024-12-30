@@ -5,6 +5,8 @@ import { YOUTUBE_SEARCH_API } from "../utils/constants";
 
 const Head = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   useEffect(() => {
     // Make an API call after every key press but if difference between 2 API calls is < 200ms decline the API call
@@ -30,6 +32,7 @@ const Head = () => {
   const getSearchSuggestions = async () => {
     const data = await fetch(YOUTUBE_SEARCH_API + searchQuery);
     const json = await data.json();
+    setSuggestions(json[1]);
   };
 
   const dispatch = useDispatch();
@@ -63,14 +66,21 @@ const Head = () => {
             className="w-1/2 border border-gray-400 p-2 rounded-l-full"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onFocus={() => setShowSuggestions(true)}
+            onBlur={() => setShowSuggestions(false)}
           />
           <button className="border border-gray-400 px-5 py-2 rounded-r-full bg-gray-100">
             🔍
           </button>
 
-          <div>
+          <div className="fixed bg-white w-[635.82px] p-2 shadow-lg rounded-lg border-gray-100">
             <ul>
-              <li></li>
+              {showSuggestions &&
+                suggestions.map((suggestion) => (
+                  <li key={suggestion} className="py-2 hover:bg-gray-100">
+                    🔍 {suggestion}
+                  </li>
+                ))}
             </ul>
           </div>
         </div>
