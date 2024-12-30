@@ -1,8 +1,37 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toggleMenu } from "../utils/appSlice";
+import { YOUTUBE_SEARCH_API } from "../utils/constants";
 
 const Head = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    // Make an API call after every key press but if difference between 2 API calls is < 200ms decline the API call
+    const timer = setTimeout(() => getSearchSuggestions(), 200);
+
+    //on re-render clear previous timer
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [searchQuery]);
+
+  // key - i
+  //   -render the component
+  //   -useEffect()
+  //   -start timer - make API call after 200ms
+
+  // key - ip
+  //   -destroy the component(useEffect return method) old timer destroyed
+  //   -re-render the component
+  //   -useEffect()
+  //   -start new timer - make API call after 200ms
+
+  const getSearchSuggestions = async () => {
+    const data = await fetch(YOUTUBE_SEARCH_API + searchQuery);
+    const json = await data.json();
+  };
+
   const dispatch = useDispatch();
 
   const toggleMenuHandler = () => {
@@ -27,14 +56,24 @@ const Head = () => {
         </a>
       </div>
       <div className="col-span-10 px-10">
-        <input
-          type="text"
-          placeholder="   Search"
-          className="w-1/2 border border-gray-400 p-2 rounded-l-full"
-        />
-        <button className="border border-gray-400 px-5 py-2 rounded-r-full bg-gray-100">
-          🔍
-        </button>
+        <div>
+          <input
+            type="text"
+            placeholder="   Search"
+            className="w-1/2 border border-gray-400 p-2 rounded-l-full"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button className="border border-gray-400 px-5 py-2 rounded-r-full bg-gray-100">
+            🔍
+          </button>
+
+          <div>
+            <ul>
+              <li></li>
+            </ul>
+          </div>
+        </div>
       </div>
       <div className="col-span-1">
         <img
