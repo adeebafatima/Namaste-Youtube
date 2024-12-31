@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { closeMenu } from "../utils/appSlice";
 import { useSearchParams } from "react-router-dom";
 import CommentsContainer from "./CommentsContainer";
+import { freeze } from "@reduxjs/toolkit";
 
 const WatchPage = () => {
   const dispatch = useDispatch();
@@ -30,3 +31,23 @@ const WatchPage = () => {
 };
 
 export default WatchPage;
+
+
+// Challenges of Live Chat
+  // - Get data Live
+  // - Update the UI (Pushing the div(Comment)) - If we keep on pushing Page will freeze + UX should be good
+
+
+// Handling Live Data
+  //1.Web Sockets - 2 way connection between UI and Server
+      // UI <->(HANDSHAKE) Server [Bidirectional]
+      // As soon as you open application web socket connection is established and 2 way data can be send
+      // No regular interval
+      // Example - Zerodah,Whatsapp
+
+  //2.Long Polling/API Polling
+      // Data flows from Server to UI (UI<-Server) [Unidirectional]
+      // You poll data at regular Interval
+      // Example - Gmail,Cricbuzz,Youtube-LiveChat[illusion that chat are coming in order, Youtube is not showing timestamp - trick,Order strictly doesnt matter here]
+
+
